@@ -14,7 +14,7 @@ namespace DeviceSimulator
 
         int telemetryInterval = 1;
         private static DeviceClient deviceClient;
-        bool Loop = true;
+        bool Loop = false;
 
         public DeviceSimulator()
         {
@@ -185,20 +185,20 @@ namespace DeviceSimulator
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
-            SendDeviceToCloudMessagesAsync();
-        }
-        private void btnSend_Click(object sender, EventArgs e)
-        {
-            if (Loop)
+            if (btnStart.Text == "Start")
             {
-                btnSend.Text = "Stop";
                 Loop = true;
+                btnStart.Text = "Stop";                
             }
             else
             {
-                btnSend.Text = "Start";
+                btnStart.Text = "Start";
                 Loop = false;
             }
+            SendDeviceToCloudMessagesAsync();
+        }
+        private void btnSend_Click(object sender, EventArgs e)
+        {           
             SendReportedPropertiesAsync();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
