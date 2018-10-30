@@ -138,8 +138,20 @@ namespace DeviceSimulator
             string results = "";
             Random rand = new Random();
 
-            double r = 40 + rand.NextDouble() * 20;
-            results = rtbPayload.Text.Replace("%%%", r.ToString());
+            
+
+            results = rtbPayload.Text;
+            int index = results.IndexOf("%%%");
+
+            double r = index + rand.NextDouble() * 20;
+
+            while (index > 0)
+            {
+                results = results.Remove(index, 3);
+                results = results.Insert(index, r.ToString());
+                r = index + rand.NextDouble() * 20;
+                index = results.IndexOf("%%%");
+            }  
 
             return results;
         }
@@ -164,7 +176,9 @@ namespace DeviceSimulator
 
             while (Loop)
             {
-                var messageString = JsonConvert.SerializeObject(GetPayload());
+               // var messageString = JsonConvert.SerializeObject(GetPayload());
+
+                var messageString = GetPayload();
                 var message = new Microsoft.Azure.Devices.Client.Message(Encoding.ASCII.GetBytes(messageString));
 
                 foreach (DataGridViewRow row in dgMessageProp.Rows)
